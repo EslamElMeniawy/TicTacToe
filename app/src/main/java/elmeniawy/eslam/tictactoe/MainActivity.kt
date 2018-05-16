@@ -12,6 +12,7 @@ class MainActivity : AppCompatActivity() {
     private val player1 = ArrayList<Int>()
     private val player2 = ArrayList<Int>()
     private var activePlayer = 1
+    private var gameOver = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,30 +41,35 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun playGame(celId: Int, btSelected: Button) {
-        // Check the active player
-        // Set text and background of button based on active player
-        // Add the cell id to the corresponding player list
-        // Change active player
-        if (activePlayer == 1) {
-            btSelected.text = getText(R.string.x)
-            btSelected.setBackgroundResource(R.color.colorPrimary)
-            player1.add(celId)
-            activePlayer = 2
+        // Check if game not over before playing
+        if (!gameOver) {
+            // Check the active player
+            // Set text and background of button based on active player
+            // Add the cell id to the corresponding player list
+            // Change active player
+            if (activePlayer == 1) {
+                btSelected.text = getText(R.string.x)
+                btSelected.setBackgroundResource(R.color.colorPrimary)
+                player1.add(celId)
+                activePlayer = 2
+            } else {
+                btSelected.text = getText(R.string.o)
+                btSelected.setBackgroundResource(R.color.colorAccent)
+                player2.add(celId)
+                activePlayer = 1
+            }
+
+            // Disable selected button
+            btSelected.isEnabled = false
+
+            // Check winner
+            checkWinner()
 
             // Call auto play for player 2 turn
-            autoPlay()
-        } else {
-            btSelected.text = getText(R.string.o)
-            btSelected.setBackgroundResource(R.color.colorAccent)
-            player2.add(celId)
-            activePlayer = 1
+            if (activePlayer == 2 && !gameOver) {
+                autoPlay()
+            }
         }
-
-        // Disable selected button
-        btSelected.isEnabled = false
-
-        // Check winner
-        checkWinner()
     }
 
     private fun checkWinner() {
@@ -91,6 +97,7 @@ class MainActivity : AppCompatActivity() {
 
         // Check if there is a winner
         if (winner != 0) {
+            gameOver = true
             showWinner(winner)
         }
     }
