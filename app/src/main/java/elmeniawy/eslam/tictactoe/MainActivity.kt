@@ -1,6 +1,5 @@
 package elmeniawy.eslam.tictactoe
 
-import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -47,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         // Change active player
         if (activePlayer == 1) {
             btSelected.text = getText(R.string.x)
-            btSelected.setBackgroundColor(Color.GREEN)
+            btSelected.setBackgroundResource(R.color.colorPrimary)
             player1.add(celId)
             activePlayer = 2
 
@@ -55,7 +54,7 @@ class MainActivity : AppCompatActivity() {
             autoPlay()
         } else {
             btSelected.text = getText(R.string.o)
-            btSelected.setBackgroundColor(Color.YELLOW)
+            btSelected.setBackgroundResource(R.color.colorAccent)
             player2.add(celId)
             activePlayer = 1
         }
@@ -138,25 +137,28 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // Select random button
-        val randomIndex = Random().nextInt(emptyCells.size)
-        val cellId = emptyCells[randomIndex]
-        val btSelected: Button?
+        // Check if there is left buttons to play
+        if (!emptyCells.isEmpty()) {
+            // Select random button
+            val randomIndex = Random().nextInt(emptyCells.size)
+            val cellId = emptyCells[randomIndex]
+            val btSelected: Button?
 
-        btSelected = when (cellId) {
-            1 -> bt1
-            2 -> bt2
-            3 -> bt3
-            4 -> bt4
-            5 -> bt5
-            6 -> bt6
-            7 -> bt7
-            8 -> bt8
-            9 -> bt9
-            else -> bt1
+            btSelected = when (cellId) {
+                1 -> bt1
+                2 -> bt2
+                3 -> bt3
+                4 -> bt4
+                5 -> bt5
+                6 -> bt6
+                7 -> bt7
+                8 -> bt8
+                9 -> bt9
+                else -> bt1
+            }
+
+            // Play game
+            playGame(cellId, btSelected)
         }
-
-        // Play game
-        playGame(cellId, btSelected)
     }
 }
