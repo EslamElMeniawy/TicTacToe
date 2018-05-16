@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private val player1 = ArrayList<Int>()
@@ -18,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun btClicked(view: View) {
+        // Get selected cell
         val btSelected: Button = view as Button
         var cellId = 0
 
@@ -33,6 +36,7 @@ class MainActivity : AppCompatActivity() {
             R.id.bt9 -> cellId = 9
         }
 
+        // Play game
         playGame(cellId, btSelected)
     }
 
@@ -46,6 +50,9 @@ class MainActivity : AppCompatActivity() {
             btSelected.setBackgroundColor(Color.GREEN)
             player1.add(celId)
             activePlayer = 2
+
+            // Call auto play for player 2 turn
+            autoPlay()
         } else {
             btSelected.text = getText(R.string.o)
             btSelected.setBackgroundColor(Color.YELLOW)
@@ -119,5 +126,37 @@ class MainActivity : AppCompatActivity() {
 
     private fun showWinner(id: Int) {
         Toast.makeText(this, getString(R.string.winner, id), Toast.LENGTH_LONG).show()
+    }
+
+    private fun autoPlay() {
+        // Get empty cells
+        val emptyCells = ArrayList<Int>()
+
+        for (cellId in 1..9) {
+            if (!(player1.contains(cellId) || player2.contains(cellId))) {
+                emptyCells.add(cellId)
+            }
+        }
+
+        // Select random button
+        val randomIndex = Random().nextInt(emptyCells.size)
+        val cellId = emptyCells[randomIndex]
+        val btSelected: Button?
+
+        btSelected = when (cellId) {
+            1 -> bt1
+            2 -> bt2
+            3 -> bt3
+            4 -> bt4
+            5 -> bt5
+            6 -> bt6
+            7 -> bt7
+            8 -> bt8
+            9 -> bt9
+            else -> bt1
+        }
+
+        // Play game
+        playGame(cellId, btSelected)
     }
 }
