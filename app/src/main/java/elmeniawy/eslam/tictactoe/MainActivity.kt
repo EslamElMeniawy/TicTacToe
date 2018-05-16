@@ -4,7 +4,6 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
@@ -131,7 +130,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showWinner(id: Int) {
-        Toast.makeText(this, getString(R.string.winner, id), Toast.LENGTH_LONG).show()
+        when (id) {
+            0 -> tvGameStatus.text = getString(R.string.tie)
+            1 -> tvGameStatus.text = getString(R.string.win)
+            2 -> tvGameStatus.text = getString(R.string.lose)
+        }
+
+        tvGameStatus.visibility = View.VISIBLE
     }
 
     private fun autoPlay() {
@@ -145,7 +150,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Check if there is left buttons to play
-        if (!emptyCells.isEmpty()) {
+        if (emptyCells.isEmpty()) {
+            gameOver = true
+            showWinner(0)
+        } else {
             // Select random button
             val randomIndex = Random().nextInt(emptyCells.size)
             val cellId = emptyCells[randomIndex]
@@ -167,5 +175,54 @@ class MainActivity : AppCompatActivity() {
             // Play game
             playGame(cellId, btSelected)
         }
+    }
+
+    fun reloadGame(@Suppress("UNUSED_PARAMETER") view: View) {
+        // Clear players array lists
+        player1.clear()
+        player2.clear()
+
+        // Set active player
+        activePlayer = 1
+
+        // Set game over
+        gameOver = false
+
+        // Clear text from game status text view and game buttons
+        tvGameStatus.text = ""
+        bt1.text = ""
+        bt2.text = ""
+        bt3.text = ""
+        bt4.text = ""
+        bt5.text = ""
+        bt6.text = ""
+        bt7.text = ""
+        bt8.text = ""
+        bt9.text = ""
+
+        // Change game buttons colors
+        bt1.setBackgroundResource(R.color.gray)
+        bt2.setBackgroundResource(R.color.gray)
+        bt3.setBackgroundResource(R.color.gray)
+        bt4.setBackgroundResource(R.color.gray)
+        bt5.setBackgroundResource(R.color.gray)
+        bt6.setBackgroundResource(R.color.gray)
+        bt7.setBackgroundResource(R.color.gray)
+        bt8.setBackgroundResource(R.color.gray)
+        bt9.setBackgroundResource(R.color.gray)
+
+        // Hide game status text view
+        tvGameStatus.visibility = View.GONE
+
+        // Enable game buttons
+        bt1.isEnabled = true
+        bt2.isEnabled = true
+        bt3.isEnabled = true
+        bt4.isEnabled = true
+        bt5.isEnabled = true
+        bt6.isEnabled = true
+        bt7.isEnabled = true
+        bt8.isEnabled = true
+        bt9.isEnabled = true
     }
 }

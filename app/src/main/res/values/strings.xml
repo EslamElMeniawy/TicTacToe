@@ -2,5 +2,7 @@
     <string name="app_name">TicTacToe</string>
     <string name="x">X</string>
     <string name="o">O</string>
-    <string name="winner">Player%1$d won the game</string>
+    <string name="win">You win :)\n\nTab to reload game</string>
+    <string name="lose">You lose :(\n\nTab to reload game</string>
+    <string name="tie">It\'s a tie!\n\nTab to reload game</string>
 </resources>
